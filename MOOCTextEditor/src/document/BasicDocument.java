@@ -95,19 +95,30 @@ public class BasicDocument extends Document
 	protected int countSyllables(String word) {
 		
 		int numOfSyllables = 0;
-		for(int index = 0; index < word.length()-1; index++) {
-			if(isVowel(word.charAt(index))&&!(isVowel(word.charAt(index+1)))) {
+		int wordLength = word.length();
+		boolean foundVowel = false;
+		
+		for(int k=0; k < wordLength; k++) {
+			if(isVowel(word.charAt(k))&&(!foundVowel)) {
+				foundVowel = true;
 				numOfSyllables++;
 			}
+			else if(!isVowel(word.charAt(k))&&foundVowel) {
+				foundVowel = false;
+			}
 		}
-		char lastCharacter = word.charAt(word.length()-1);
-		if(isVowel(lastCharacter)
+		if(word.endsWith("e")||word.endsWith("E")) {
+			if ((numOfSyllables > 1)&&(!isVowel(word.charAt(wordLength-2)))) {
+				numOfSyllables--;
+			}
+		}
+		return numOfSyllables;
 		
 	}
 	
 	private boolean isVowel(char character) {
 		
-		return ("aeiouy".indexOf(character) != -1);		
+		return ("AEIOUYaeiouy".indexOf(character) != -1);		
 	}
 	
 	
