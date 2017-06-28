@@ -131,8 +131,8 @@ public abstract class Document {
 	public double getFleschScore()
 	{
 	    double fleshScore = 206.835;
-	    double wordBySentence = 1.015*(getNumWords()/getNumSentences());
-	    double syllablesByWords = 84.6*(getNumSyllables()/getNumWords());
+	    double wordBySentence = 1.015*((double)getNumWords()/getNumSentences());
+	    double syllablesByWords = 84.6*((double)getNumSyllables()/getNumWords());
 	    fleshScore = (fleshScore -wordBySentence)-syllablesByWords;	    
 	    return fleshScore;
 	}
