@@ -38,6 +38,39 @@ public class EfficientDocument extends Document {
 		return !(tok.indexOf("!") >=0 || tok.indexOf(".") >=0 || tok.indexOf("?")>=0);
 	}
 	
+	private boolean isPunctuation(String tok) {
+		return !isWord(tok);
+	}
+	
+	protected int countSyllables(String word) {
+		
+		int numOfSyllables = 0;
+		int wordLength = word.length();
+		boolean foundVowel = false;
+		
+		for(int k=0; k < wordLength; k++) {
+			if(isVowel(word.charAt(k))&&(!foundVowel)) {
+				foundVowel = true;
+				numOfSyllables++;
+			}
+			else if(!isVowel(word.charAt(k))&&foundVowel) {
+				foundVowel = false;
+			}
+		}
+		if(word.endsWith("e")||word.endsWith("E")) {
+			if ((numOfSyllables > 1)&&(!isVowel(word.charAt(wordLength-2)))) {
+				numOfSyllables--;
+			}
+		}
+		return numOfSyllables;
+		
+	}
+	
+	private boolean isVowel(char character) {
+		
+		return ("AEIOUYaeiouy".indexOf(character) != -1);		
+	}	
+	
 	
     /** Passes through the text one time to count the number of words, syllables 
      * and sentences, and set the member variables appropriately.
@@ -51,7 +84,20 @@ public class EfficientDocument extends Document {
 		// MAKE SURE YOU UNDERSTAND THIS LINE BEFORE YOU CODE THE REST
 		// OF THIS METHOD.
 		List<String> tokens = getTokens("[!?.]+|[a-zA-Z]+");
-		
+		for(String token : tokens) {
+			if(isWord(token)) {
+				numWords++;
+				numSyllables += countSyllables(token);
+				
+			}
+			else
+			{
+				numSentences++;
+			}
+		}
+		if((tokens.size()>0)&&isWord(tokens.get(tokens.size()-1))) {
+			numSentences++;
+		}
 		// TODO: Finish this method.  Remember the countSyllables method from 
 		// Document.  That will come in handy here.  isWord defined above will also help.
 	}
@@ -73,7 +119,7 @@ public class EfficientDocument extends Document {
 	@Override
 	public int getNumSentences() {
 		//TODO: write this method.  Hint: It's simple
-		return 0;
+		return numSentences;
 	}
 
 	
@@ -94,7 +140,7 @@ public class EfficientDocument extends Document {
 	@Override
 	public int getNumWords() {
 		//TODO: write this method.  Hint: It's simple
-	    return 0;
+	    return numWords;
 	}
 
 
@@ -116,7 +162,7 @@ public class EfficientDocument extends Document {
 	@Override
 	public int getNumSyllables() {
         //TODO: write this method.  Hint: It's simple
-        return 0;
+        return numSyllables;
 	}
 	
 	// Can be used for testing
