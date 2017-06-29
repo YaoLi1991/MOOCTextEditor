@@ -37,9 +37,26 @@ public class DocumentBenchmarking {
 		// TODO: Fill in the rest of this method so that it runs two loops
 		// and prints out timing results as described in the assignment 
 		// instructions and following the pseudocode below.
+		System.out.println("Number of Chars\tBasic Time\tEfficient Time");
 		for (int numToCheck = start; numToCheck < numSteps*increment + start; 
 				numToCheck += increment)
 		{
+			String benchmarkInput = getStringFromFile(textfile, numToCheck);
+
+			long basicStartTime = System.nanoTime();
+			BasicDocument basicDocument = new BasicDocument(benchmarkInput);
+			double numBasic = basicDocument.getFleschScore();
+			long basicEndTime = System.nanoTime();
+			long efficientStartTime = System.nanoTime();
+			EfficientDocument efficientDocument = new EfficientDocument(benchmarkInput);
+			double numEfficient = efficientDocument.getFleschScore();
+			long efficientEndTime = System.nanoTime();
+			
+			double basicTime = (basicEndTime - basicStartTime)/1000000000.0;
+			double efficientTime = (efficientEndTime - efficientStartTime)/1000000000.0;
+			System.out.println(numToCheck+"\t"+basicTime+"\t"+efficientTime);
+			
+						
 			// numToCheck holds the number of characters that you should read from the 
 			// file to create both a BasicDocument and an EfficientDocument.  
 			
